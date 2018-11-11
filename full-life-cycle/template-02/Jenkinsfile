@@ -47,11 +47,16 @@ def gitBranch = 'master'
 
 // with parallel array methord End
 def checkout = [:]
-stage('Checkout and Buid')
+int index =0
+//
       projectsMap.each { pName, gitUrl ->
           println "project name: ${pName} and Git url name ${gitUrl}"
           gitProjectUrl = gitBaseUrl + gitUrl
           println "Project url :" + gitProjectUrl
+          index++
+          if (index == 1) {
+            stage('Checkout and Buid')
+          }
 
           checkout["${pName}"] = {
             dir("${pName}"){
