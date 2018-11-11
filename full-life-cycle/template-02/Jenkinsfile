@@ -21,24 +21,38 @@ def gitBranch = 'master'
     }
 
 
-def branches = [:]
+def checkout = [:]
+def build = [:]
     projectsMap.each { pName, gitUrl ->
         println "project name: ${pName} and Git url name ${gitUrl}"
         gitProjectUrl = gitBaseUrl + gitUrl
         println "Project url :" + gitProjectUrl
-        branches["${pName}"] = {
+
         dir("${pName}"){
-          echo "${pName}"
-          stage("${pName}_SCM") {
-            git branch: gitBranch , url : gitProjectUrl
-          }
-        }
+          checkout["${pName}"] = {
+              echo "${pName}"
+              stage("${pName}_SCM") {
+                git branch: gitBranch , url : gitProjectUrl
+              }
+            }
+            build["${pName}"] = {
+              stage("${pName}"){
+                        if (isUnix()) {
+                          sh "pwd"
+                          sh "'${mvnHome}/bin/mvn' clean install"
+                        }else {
+                           bat(/"${mvnHome}\bin\mvn" clean install/)
+                           bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+                        }
+              }
+            }
       }
 
 
         };
 
-        parallel branches
+        parallel checkout
+        parallel build
 
 
 //##################
