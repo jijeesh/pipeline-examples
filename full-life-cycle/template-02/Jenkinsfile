@@ -7,8 +7,8 @@ projectsMap.put('alert-service', 'devops/nets-alert-service')
 projectsMap.put('auth-server', 'devops/auth-server')
 
 def gitBranch = 'dev'
-  def mvnHome = tool 'maven3'
-  def jdkHome = tool 'jdk8'
+//  def mvnHome = tool 'maven3'
+//  def jdkHome = tool 'jdk8'
 
   def gitBaseUrl = 'http://giturl/'
   //def server = Artifactory.server "artifactory"
