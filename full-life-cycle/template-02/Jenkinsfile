@@ -1,0 +1,54 @@
+#!groovy
+
+node{
+def projectsMap = [:]
+projectsMap.put('admin-service', 'devops/admin-service')
+projectsMap.put('alert-service', 'devops/nets-alert-service')
+projectsMap.put('auth-server', 'devops/auth-server')
+
+def gitBranch = 'dev'
+  def mvnHome = tool 'maven3'
+  def jdkHome = tool 'jdk8'
+
+  def gitBaseUrl = 'http://giturl/'
+  //def server = Artifactory.server "artifactory"
+    // Create an Artifactory Maven instance.
+  //  def rtMaven = Artifactory.newMavenBuild()
+    def buildInfo
+
+    stage('Artifactory configuration') {
+
+    }
+
+    projectsMap.each { pName, gitUrl ->
+        println "project name: ${pName} and Git url name ${gitUrl}"
+        gitProjectUrl = gitBaseUrl + gitUrl
+        println "Project url :" + gitProjectUrl
+
+        stage("${pName}_SCM") {
+      //  git branch: gitBranch , url : gitProjectUrl
+      echo "${pName}"
+        }
+        };
+
+          //End of Foreach
+
+
+
+            stage("Test") {
+                parallel(
+                  "Firefox": {
+                    bat 'ping  localhost'
+                  },
+                  "IE": {
+                    bat 'ping  localhost'
+                  },
+                  "chrome": {
+                    bat 'ping  localhost'
+                  }
+                )
+            }
+
+
+
+}
