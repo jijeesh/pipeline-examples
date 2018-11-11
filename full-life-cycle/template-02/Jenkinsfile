@@ -56,7 +56,7 @@ int index =0
           println "Project url :" + gitProjectUrl
           index++
           if (index == 1) {
-            stage('Checkout')
+          //  stage('Checkout')
           }
 
           checkout["${pName}"] = {
@@ -74,7 +74,7 @@ int index =0
 
                 }
                 if (index == 1) {
-                  stage('Build')
+                //  stage('Build')
                 }
                 build["${pName}"] = {
                   dir("${pName}"){
@@ -93,8 +93,9 @@ int index =0
 
           };
 
-
+  stage('Checkout')
 parallel checkout
+  stage('Build')
 parallel build
 
 //##################
