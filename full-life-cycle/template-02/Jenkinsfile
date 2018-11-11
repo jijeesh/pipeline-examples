@@ -27,26 +27,15 @@ def gitBranch = 'master'
         dir("${pName}"){
           echo "${pName}"
           stage("${pName}_SCM") {
-          git branch: gitBranch , url : gitProjectUrl
-          sh "'${mvnHome}/bin/mvn' clean install"
+            git branch: gitBranch , url : gitProjectUrl
+            if (isUnix()) {
+              sh "'${mvnHome}/bin/mvn' clean install"
+            }else {
+               bat(/"${mvnHome}\bin\mvn" clean install/)
+               bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+            }
+          }
         }
-      //   stage("${pName}_Build") {
-      //      // Run the maven build
-      //      if (isUnix()) {
-      //         "'${mvnHome}/bin/mvn' clean install"
-      //      } else {
-      //         bat(/"${mvnHome}\bin\mvn" clean install/)
-      //      }
-      // }
-
-        }
-
-      //   stage("${pName}_SCM") {
-      // //  git branch: gitBranch , url : gitProjectUrl
-      //   echo "${pName}"
-      //   }
-
-
         };
 
           //End of Foreach
