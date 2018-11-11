@@ -28,15 +28,16 @@ def gitBranch = 'master'
           echo "${pName}"
           stage("${pName}_SCM") {
           git branch: gitBranch , url : gitProjectUrl
+          "'${mvnHome}/bin/mvn' clean install"
         }
-        stage("${pName}_Build") {
-           // Run the maven build
-           if (isUnix()) {
-              "'${mvnHome}/bin/mvn' clean install"
-           } else {
-              bat(/"${mvnHome}\bin\mvn" clean install/)
-           }
-      }
+      //   stage("${pName}_Build") {
+      //      // Run the maven build
+      //      if (isUnix()) {
+      //         "'${mvnHome}/bin/mvn' clean install"
+      //      } else {
+      //         bat(/"${mvnHome}\bin\mvn" clean install/)
+      //      }
+      // }
 
         }
 
