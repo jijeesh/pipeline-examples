@@ -20,32 +20,57 @@ def gitBranch = 'master'
       echo 'Artifactory'
     }
 
+// with parallel array methord
+// def checkout = [:]
+// stage('Checkout and Buid'){
+//     projectsMap.each { pName, gitUrl ->
+//         println "project name: ${pName} and Git url name ${gitUrl}"
+//         gitProjectUrl = gitBaseUrl + gitUrl
+//         println "Project url :" + gitProjectUrl
+//
+//         checkout["${pName}"] = {
+//           dir("${pName}"){
+//             echo "${pName}"
+//                 git branch: gitBranch , url : gitProjectUrl
+//                 if (isUnix()) {
+//                     sh "pwd"
+//                     sh "'${mvnHome}/bin/mvn' clean install"
+//                   }else {
+//                      bat(/"${mvnHome}\bin\mvn" clean install/)
+//                      bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+//                   }
+//             }
+//           }
+//         };
+// }
+//         parallel checkout
 
-def checkout = [:]
+// with parallel array methord End
+
 stage('Checkout and Buid'){
-    projectsMap.each { pName, gitUrl ->
-        println "project name: ${pName} and Git url name ${gitUrl}"
-        gitProjectUrl = gitBaseUrl + gitUrl
-        println "Project url :" + gitProjectUrl
+  parallel(
+      projectsMap.each { pName, gitUrl ->
+          println "project name: ${pName} and Git url name ${gitUrl}"
+          gitProjectUrl = gitBaseUrl + gitUrl
+          println "Project url :" + gitProjectUrl
 
-        checkout["${pName}"] = {
-          dir("${pName}"){
-            echo "${pName}"
-                git branch: gitBranch , url : gitProjectUrl
-                if (isUnix()) {
-                    sh "pwd"
-                    sh "'${mvnHome}/bin/mvn' clean install"
-                  }else {
-                     bat(/"${mvnHome}\bin\mvn" clean install/)
-                     bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+          "${pName}":{
+            dir("${pName}"){
+
+                  git branch: gitBranch , url : gitProjectUrl
+                  if (isUnix()) {
+                      sh "pwd"
+                      sh "'${mvnHome}/bin/mvn' clean install"
+                    }else {
+                       bat(/"${mvnHome}\bin\mvn" clean install/)
+                       bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+                    }
                   }
-            }
-          }
-        };
+              },
+
+          };
+        )
 }
-        parallel checkout
-
-
 
 
 //##################
