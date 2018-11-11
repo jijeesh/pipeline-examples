@@ -48,7 +48,6 @@ def gitBranch = 'master'
 // with parallel array methord End
 
 stage('Checkout and Buid'){
-  parallel(
       projectsMap.each { pName, gitUrl ->
           println "project name: ${pName} and Git url name ${gitUrl}"
           gitProjectUrl = gitBaseUrl + gitUrl
@@ -66,7 +65,7 @@ stage('Checkout and Buid'){
                        bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
                     }
                   }
-              
+
 
           };
         )
