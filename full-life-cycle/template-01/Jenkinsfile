@@ -1,0 +1,94 @@
+#!groovy
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+
+
+node {
+
+
+
+        checkout()
+        build()
+        unitTest()
+        preview()
+        sonarServer()
+        allCodeQualityTests()
+        sonarPreview()
+
+        preProduction()
+        manualPromotion()
+        production()
+
+}
+
+def isPRMergeBuild() {
+    return (env.BRANCH_NAME ==~ /^PR-\d+$/)
+}
+
+def checkout(){
+stage('checkout'){
+echo 'checkout'
+}
+}
+
+def build(){
+stage('build'){
+echo 'build'
+}
+}
+
+def unitTest(){
+stage('unitTest'){
+    echo 'unit test'
+
+}
+}
+
+def preview(){
+stage('preview'){
+    echo 'preview'
+
+}
+}
+
+def sonarServer(){
+stage('sonarServer'){
+    echo 'sonar server'
+
+}
+}
+
+def allCodeQualityTests(){
+stage('allCodeQualityTests'){
+    echo 'allCodeQualityTests'
+
+}
+}
+
+def sonarPreview() {
+    stage('SonarQube Preview') {
+        echo 'sonarPreview'
+
+    }
+}
+
+def preProduction(){
+stage('preProduction'){
+    echo 'preProduction'
+
+}
+}
+
+def manualPromotion(){
+stage('manualPromotion'){
+    echo 'manualPromotion'
+
+}
+}
+
+def production(){
+stage('production'){
+echo 'production'
+}
+}
