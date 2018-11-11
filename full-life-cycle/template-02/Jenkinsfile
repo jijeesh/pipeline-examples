@@ -2,22 +2,22 @@
 
 node{
 def projectsMap = [:]
-projectsMap.put('admin-service', 'devops/admin-service')
-projectsMap.put('alert-service', 'devops/nets-alert-service')
-projectsMap.put('auth-server', 'devops/auth-server')
+projectsMap.put('admin-service', 'jijeesh/java-hello-world-with-maven')
+projectsMap.put('alert-service', 'jijeesh/java-hello-world-with-maven')
+projectsMap.put('auth-server', 'jijeesh/java-hello-world-with-maven')
 
-def gitBranch = 'dev'
+def gitBranch = 'master'
 //  def mvnHome = tool 'maven3'
 //  def jdkHome = tool 'jdk8'
 
-  def gitBaseUrl = 'http://giturl/'
+  def gitBaseUrl = 'https://github.com/'
   //def server = Artifactory.server "artifactory"
     // Create an Artifactory Maven instance.
   //  def rtMaven = Artifactory.newMavenBuild()
     def buildInfo
 
     stage('Artifactory configuration') {
-
+      echo 'Artifactory'
     }
 
     projectsMap.each { pName, gitUrl ->
@@ -26,12 +26,15 @@ def gitBranch = 'dev'
         println "Project url :" + gitProjectUrl
         dir("${pName}"){
           echo "${pName}"
+          stage("${pName}_SCM") {
+          git branch: gitBranch , url : gitProjectUrl
+        }
         }
 
-        stage("${pName}_SCM") {
-      //  git branch: gitBranch , url : gitProjectUrl
-        echo "${pName}"
-        }
+      //   stage("${pName}_SCM") {
+      // //  git branch: gitBranch , url : gitProjectUrl
+      //   echo "${pName}"
+      //   }
 
 
         };
