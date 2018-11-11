@@ -20,14 +20,15 @@ def gitBranch = 'master'
       echo 'Artifactory'
     }
 
-
+int index = 0
 def checkout = [:]
 def build = [:]
     projectsMap.each { pName, gitUrl ->
         println "project name: ${pName} and Git url name ${gitUrl}"
         gitProjectUrl = gitBaseUrl + gitUrl
         println "Project url :" + gitProjectUrl
-        stage('Checkout'){
+        index++
+      if(index==1) stage('Checkout'){
         checkout["${pName}"] = {
         dir("${pName}"){
 
@@ -39,8 +40,8 @@ def build = [:]
             }
 
       }
-    }
-    stage('Build'){
+  if(index==1)  }
+  if(index==1)  stage('Build'){
       build["${pName}"] = {
       dir("${pName}"){
 
@@ -56,7 +57,7 @@ def build = [:]
             }
           }
         }
-      }
+    if(index==1)  }
 
 
         };
