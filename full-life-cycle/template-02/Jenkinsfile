@@ -24,11 +24,16 @@ def gitBranch = 'dev'
         println "project name: ${pName} and Git url name ${gitUrl}"
         gitProjectUrl = gitBaseUrl + gitUrl
         println "Project url :" + gitProjectUrl
+        dir("${pName}"){
+          echo "${pName}"
+        }
 
         stage("${pName}_SCM") {
       //  git branch: gitBranch , url : gitProjectUrl
-      echo "${pName}"
+        echo "${pName}"
         }
+
+
         };
 
           //End of Foreach
