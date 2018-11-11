@@ -29,6 +29,15 @@ def gitBranch = 'master'
           stage("${pName}_SCM") {
           git branch: gitBranch , url : gitProjectUrl
         }
+        stage("${pName}_Build") {
+           // Run the maven build
+           if (isUnix()) {
+              sh "mvn clean install"
+           } else {
+              bat(/"${mvnHome}\bin\mvn" clean install/)
+           }
+      }
+
         }
 
       //   stage("${pName}_SCM") {
