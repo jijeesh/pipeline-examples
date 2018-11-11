@@ -20,52 +20,31 @@ def gitBranch = 'master'
       echo 'Artifactory'
     }
 
-int index = 0
+
 def checkout = [:]
-def build = [:]
+stage('Checkout and Buid'){
     projectsMap.each { pName, gitUrl ->
         println "project name: ${pName} and Git url name ${gitUrl}"
         gitProjectUrl = gitBaseUrl + gitUrl
         println "Project url :" + gitProjectUrl
-        index++
-      if(index==1) stage('Checkout')
-      {
+
         checkout["${pName}"] = {
-        dir("${pName}"){
-
-              echo "${pName}"
-              stage("${pName}") {
-                git branch: gitBranch , url : gitProjectUrl
-
-              }
-            }
-
-      }
-    }
-  if(index==1)  stage('Build')
-  {
-      build["${pName}"] = {
-      dir("${pName}"){
-
+          dir("${pName}"){
             echo "${pName}"
-            stage("${pName}") {
-              if (isUnix()) {
-                sh "pwd"
-                sh "'${mvnHome}/bin/mvn' clean install"
-              }else {
-                 bat(/"${mvnHome}\bin\mvn" clean install/)
-                 bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
-              }
+                git branch: gitBranch , url : gitProjectUrl
+                if (isUnix()) {
+                    sh "pwd"
+                    sh "'${mvnHome}/bin/mvn' clean install"
+                  }else {
+                     bat(/"${mvnHome}\bin\mvn" clean install/)
+                     bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+                  }
             }
           }
-        }
-      }
-
-
         };
-
+}
         parallel checkout
-        parallel build
+
 
 
 
