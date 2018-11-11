@@ -38,13 +38,13 @@ def gitBranch = 'dev'
             stage("Test") {
                 parallel(
                   "Firefox": {
-                    bat 'ping  localhost'
+                    echo 'firefox'
                   },
                   "IE": {
-                    bat 'ping  localhost'
+                   echo 'IE'
                   },
-                  "chrome": {
-                    bat 'ping  localhost'
+                  "Chrome": {
+                    echo 'Chrome'
                   }
                 )
             }
