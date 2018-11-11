@@ -7,7 +7,7 @@ projectsMap.put('alert-service', 'jijeesh/java-hello-world-with-maven')
 projectsMap.put('auth-server', 'jijeesh/java-hello-world-with-maven')
 
 def gitBranch = 'master'
-//  def mvnHome = tool 'maven3'
+  def mvnHome = tool 'maven3'
 //  def jdkHome = tool 'jdk8'
 
   def gitBaseUrl = 'https://github.com/'
@@ -32,7 +32,7 @@ def gitBranch = 'master'
         stage("${pName}_Build") {
            // Run the maven build
            if (isUnix()) {
-              sh "mvn clean install"
+              "'${mvnHome}/bin/mvn' clean install"
            } else {
               bat(/"${mvnHome}\bin\mvn" clean install/)
            }
