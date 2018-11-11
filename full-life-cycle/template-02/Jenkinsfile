@@ -47,7 +47,7 @@ def gitBranch = 'master'
 
 // with parallel array methord End
 
-stage('Checkout and Buid'){
+stage('Checkout and Buid')
       projectsMap.each { pName, gitUrl ->
           println "project name: ${pName} and Git url name ${gitUrl}"
           gitProjectUrl = gitBaseUrl + gitUrl
@@ -68,8 +68,8 @@ stage('Checkout and Buid'){
 
 
           };
-        
-}
+
+
 
 
 //##################
