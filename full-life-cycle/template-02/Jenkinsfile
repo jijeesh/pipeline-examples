@@ -28,7 +28,7 @@ def gitBranch = 'master'
           echo "${pName}"
           stage("${pName}_SCM") {
           git branch: gitBranch , url : gitProjectUrl
-          "'${mvnHome}/bin/mvn' clean install"
+          sh "'${mvnHome}/bin/mvn' clean install"
         }
       //   stage("${pName}_Build") {
       //      // Run the maven build
