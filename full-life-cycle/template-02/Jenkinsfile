@@ -28,8 +28,9 @@ def build = [:]
         gitProjectUrl = gitBaseUrl + gitUrl
         println "Project url :" + gitProjectUrl
 
+        checkout["${pName}"] = {
         dir("${pName}"){
-          checkout["${pName}"] = {
+
               echo "${pName}"
               stage("${pName}") {
                 git branch: gitBranch , url : gitProjectUrl
@@ -49,7 +50,7 @@ def build = [:]
         };
 
         parallel checkout
-      
+
 
 
 //##################
