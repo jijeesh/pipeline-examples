@@ -2,9 +2,13 @@
 
 node{
 def projectsMap = [:]
-projectsMap.put('admin-service', 'jijeesh/java-hello-world-with-maven')
-projectsMap.put('alert-service', 'jijeesh/java-hello-world-with-maven')
-projectsMap.put('auth-server', 'jijeesh/java-hello-world-with-maven')
+def paramServices='--ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\\UPS\\jenkins_build\\LOGS'
+def paramConfigServer = '--ACTIVE_PROFILE=native --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --CONFIG_PATH=E:\\UPS\\BUILD\\SPRINT4'
+//projectsMap.put('nets-config-server', ['nets/nets-config-server',"${paramConfigServer}"])
+projectsMap.put('nets-admin-service', ['nets/nets-admin-service',"${paramServices}"])
+projectsMap.put('nets-alert-service', ['nets/nets-alert-service',"${paramServices}"])
+projectsMap.put('nets-auth-server', ['nets/nets-auth-server',"${paramServices}"])
+
 
 def gitBranch = 'master'
   def mvnHome = tool 'maven36'
@@ -51,7 +55,9 @@ def build = [:]
 def run = [:]
 
 //
-      projectsMap.each { pName, gitUrl ->
+      projectsMap.each { pName, project ->
+        gitUrl = project[0]
+        param = project[1]
           println "project name: ${pName} and Git url name ${gitUrl}"
           gitProjectUrl = gitBaseUrl + gitUrl
           println "Project url :" + gitProjectUrl
@@ -69,7 +75,7 @@ def run = [:]
                             sh "'${mvnHome}/bin/mvn' clean install"
                           }else {
                              bat(/"${mvnHome}\bin\mvn" clean install/)
-                             bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+                            // bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
                           }
                         }
 
@@ -82,8 +88,9 @@ def run = [:]
                                    //bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
                                 //  sh "'${mvnHome}/bin/mvn' clean install"
                                 }else {
-                                   bat(/"${mvnHome}\bin\mvn" clean install/)
-                                   bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+                                  // bat(/"${mvnHome}\bin\mvn" clean install/)
+                                  // bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" --ACTIVE_PROFILE=intt --SERVICE_RUNNING_HOST_NAME=127.0.0.1 --DISCOVERY_SERVICE_HOST=127.0.0.1 --LOG_PATH=E:\UPS\jenkins_build\LOGS/)
+                                   bat(/start "${pName}" java -jar "target\${pName}-0.0.1-SNAPSHOT.jar" "${param}"/)
                                 }
                               }
 
